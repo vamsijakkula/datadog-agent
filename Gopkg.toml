@@ -279,3 +279,11 @@
 [[constraint]]
   name = "github.com/bhmj/jsonslice"
   revision = "882a55fa931cb1034965bd34d2366b6b5fb012ae"
+
+[[override]]
+  name = "k8s.io/gengo"
+  revision = "e0e292d8aa122d458174e1bef5f142b4d0a67a05"
+
+[[constraint]]
+  branch = "vboulineau/datadogmetric"
+  name = "github.com/DataDog/datadog-operator"

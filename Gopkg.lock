@@ -58,6 +58,27 @@
   version = "v2.2.0"
 
 [[projects]]
+  branch = "vboulineau/datadogmetric"
+  digest = "1:609ba42e3fe6939c209cf41234595c54930eacdbef96aedbed89753d8406b9bb"
+  name = "github.com/DataDog/datadog-operator"
+  packages = [
+    ".",
+    "pkg/apis/datadoghq/v1alpha1",
+    "pkg/generated/clientset/versioned",
+    "pkg/generated/clientset/versioned/fake",
+    "pkg/generated/clientset/versioned/scheme",
+    "pkg/generated/clientset/versioned/typed/datadoghq/v1alpha1",
+    "pkg/generated/clientset/versioned/typed/datadoghq/v1alpha1/fake",
+    "pkg/generated/informers/externalversions",
+    "pkg/generated/informers/externalversions/datadoghq",
+    "pkg/generated/informers/externalversions/datadoghq/v1alpha1",
+    "pkg/generated/informers/externalversions/internalinterfaces",
+    "pkg/generated/listers/datadoghq/v1alpha1",
+  ]
+  pruneopts = ""
+  revision = "19bc88527175ea13ea0bd7eac68b304ce62287e9"
+
+[[projects]]
   branch = "master"
   digest = "1:a59f3622f110cd6dbb8675a21aa4882dd4163445985b6f0c1abf18a22bc7e837"
   name = "github.com/DataDog/gohai"
@@ -453,6 +474,14 @@
   pruneopts = ""
   revision = "97fdf19511ea361ae1c100dd393cc47f8dcfa1e1"
   version = "v4"
+
+[[projects]]
+  digest = "1:91047da386fde9ac376e704aa7ce58d522c6ec71bf22826cfab9a71fa1728770"
+  name = "github.com/datadog/extendeddaemonset"
+  packages = ["pkg/apis/datadoghq/v1alpha1"]
+  pruneopts = ""
+  revision = "5163730247412b81103879c02da2961564f6c4ac"
+  version = "v0.1.0"
 
 [[projects]]
   digest = "1:0deddd908b6b4b768cfc272c16ee61e7088a60f7fe2f06c547bd3d8e1f8b8e77"
@@ -1447,6 +1476,17 @@
   revision = "b558ed86338161033b6f2c3b6656a378f5c51d80"
 
 [[projects]]
+  digest = "1:8659218fd6bd2c47f13ffb83ba738462c4487d22542056bef0443bcbc16306dc"
+  name = "golang.org/x/mod"
+  packages = [
+    "module",
+    "semver",
+  ]
+  pruneopts = ""
+  revision = "ed3ec21bb8e252814c380df79a80f366440ddb2d"
+  version = "v0.2.0"
+
+[[projects]]
   branch = "master"
   digest = "1:6cb053a62bf923c2b5d17fb53fa027a479e7b438a8be5b0c5d948dced78c2d1c"
   name = "golang.org/x/net"
@@ -1550,10 +1590,25 @@
     "go/internal/packagesdriver",
     "go/packages",
     "go/types/typeutil",
+    "imports",
+    "internal/fastwalk",
+    "internal/gopathwalk",
+    "internal/imports",
     "internal/packagesinternal",
   ]
   pruneopts = ""
   revision = "947cbf1911355735edc7395a97190eea60644082"
+
+[[projects]]
+  branch = "master"
+  digest = "1:9d4ac09a835404ae9306c6e1493cf800ecbb0f3f828f4333b3e055de4c962eea"
+  name = "golang.org/x/xerrors"
+  packages = [
+    ".",
+    "internal",
+  ]
+  pruneopts = ""
+  revision = "9bdfabe68543c54f90421aeb9a60ef8061b5b544"
 
 [[projects]]
   digest = "1:0568e577f790e9bd0420521cff50580f9b38165a38f217ce68f55c4bbaa97066"
@@ -2075,6 +2130,36 @@
   revision = "637fc595d17acea6ce5f5b894b0a3ab301bf674e"
 
 [[projects]]
+  digest = "1:2b1f35941f5306effd839a5091bdc25f1ddbdb84a9b488d6b930a51a0fe5eab1"
+  name = "k8s.io/code-generator"
+  packages = [
+    "cmd/client-gen",
+    "cmd/client-gen/args",
+    "cmd/client-gen/generators",
+    "cmd/client-gen/generators/fake",
+    "cmd/client-gen/generators/scheme",
+    "cmd/client-gen/generators/util",
+    "cmd/client-gen/path",
+    "cmd/client-gen/types",
+    "cmd/conversion-gen",
+    "cmd/conversion-gen/args",
+    "cmd/conversion-gen/generators",
+    "cmd/deepcopy-gen",
+    "cmd/deepcopy-gen/args",
+    "cmd/informer-gen",
+    "cmd/informer-gen/args",
+    "cmd/informer-gen/generators",
+    "cmd/lister-gen",
+    "cmd/lister-gen/args",
+    "cmd/lister-gen/generators",
+    "pkg/namer",
+    "pkg/util",
+  ]
+  pruneopts = ""
+  revision = "c3277d42784bc6492e21dee0e0ed900901ac0299"
+  version = "v0.18.2"
+
+[[projects]]
   branch = "master"
   digest = "1:04f8873009f54a76c817b1161bb8f3743328127c9eedec76f4414b43ef52b903"
   name = "k8s.io/component-base"
@@ -2098,6 +2183,21 @@
   revision = "3ae76f584e7986aafdb594f1ff1b479829fc558a"
 
 [[projects]]
+  digest = "1:a4921e4fa5dffd44b3fe0b737c2d2304147ad1824355e1895a42daa2f31261c3"
+  name = "k8s.io/gengo"
+  packages = [
+    "args",
+    "examples/deepcopy-gen/generators",
+    "examples/set-gen/sets",
+    "generator",
+    "namer",
+    "parser",
+    "types",
+  ]
+  pruneopts = ""
+  revision = "e0e292d8aa122d458174e1bef5f142b4d0a67a05"
+
+[[projects]]
   branch = "release-1.x"
   digest = "1:1da5a608286e0ad0e842f173c2687443cec49837d627721a0ea2bd1b6a68e243"
   name = "k8s.io/klog"
@@ -2109,18 +2209,23 @@
   digest = "1:59cce16b16002977ebfa3cbc6a72922d04704d3d4b9ee85ec916057d6b52762e"
   name = "k8s.io/kube-openapi"
   packages = [
+    "cmd/openapi-gen",
+    "cmd/openapi-gen/args",
     "pkg/builder",
     "pkg/common",
+    "pkg/generators",
+    "pkg/generators/rules",
     "pkg/handler",
     "pkg/schemaconv",
     "pkg/util",
     "pkg/util/proto",
+    "pkg/util/sets",
   ]
   pruneopts = ""
   revision = "b3a7cee44a305be0a69e1b9ac03018307287e1b0"
 
 [[projects]]
-  digest = "1:f27698f7ae7864893ebcfb843e44d821263ac1dcf0ba1d5c2353f9d319a2f28d"
+  digest = "0:"
   name = "k8s.io/kubernetes"
   packages = [
     "pkg/kubelet/remote/fake",
@@ -2203,6 +2308,12 @@
     "github.com/DataDog/agent-payload/gogen",
     "github.com/DataDog/agent-payload/process",
     "github.com/DataDog/datadog-go/statsd",
+    "github.com/DataDog/datadog-operator",
+    "github.com/DataDog/datadog-operator/pkg/apis/datadoghq/v1alpha1",
+    "github.com/DataDog/datadog-operator/pkg/generated/clientset/versioned",
+    "github.com/DataDog/datadog-operator/pkg/generated/clientset/versioned/fake",
+    "github.com/DataDog/datadog-operator/pkg/generated/informers/externalversions",
+    "github.com/DataDog/datadog-operator/pkg/generated/listers/datadoghq/v1alpha1",
     "github.com/DataDog/gohai/cpu",
     "github.com/DataDog/gohai/filesystem",
     "github.com/DataDog/gohai/memory",
@@ -2337,6 +2448,7 @@
     "k8s.io/apimachinery/pkg/runtime/schema",
     "k8s.io/apimachinery/pkg/runtime/serializer",
     "k8s.io/apimachinery/pkg/types",
+    "k8s.io/apimachinery/pkg/util/diff",
     "k8s.io/apimachinery/pkg/util/errors",
     "k8s.io/apimachinery/pkg/util/rand",
     "k8s.io/apimachinery/pkg/util/sets",
@@ -2354,6 +2466,7 @@
     "k8s.io/client-go/listers/autoscaling/v2beta1",
     "k8s.io/client-go/listers/core/v1",
     "k8s.io/client-go/rest",
+    "k8s.io/client-go/testing",
     "k8s.io/client-go/tools/cache",
     "k8s.io/client-go/tools/clientcmd",
     "k8s.io/client-go/tools/leaderelection",
