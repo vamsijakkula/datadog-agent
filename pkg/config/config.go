@@ -982,6 +982,15 @@ func getMultipleEndpointsWithConfig(config Config) (map[string][]string, error) 
 	return keysPerDomain, nil
 }
 
+// IsCloudProviderEnabled checks the cloud provider family provided in pkg/util/<cloud_provider>.go against the value for cloud_provider: on the global config object Datadog
+func IsCloudProviderEnabled(cloudProviderFamily string) bool {
+	cloudProviderFromConfig := Datadog.GetString("cloud_provider")
+	if cloudProviderFromConfig == "" || cloudProviderFromConfig == cloudProviderFamily {
+		return true
+	}
+	return false
+}
+
 // IsContainerized returns whether the Agent is running on a Docker container
 func IsContainerized() bool {
 	return os.Getenv("DOCKER_DD_AGENT") != ""
