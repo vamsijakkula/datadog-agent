@@ -6,7 +6,6 @@
 package util
 
 import (
-	"github.com/DataDog/datadog-agent/pkg/config"
 	"github.com/DataDog/datadog-agent/pkg/metadata/inventories"
 	"github.com/DataDog/datadog-agent/pkg/util/alibaba"
 	"github.com/DataDog/datadog-agent/pkg/util/azure"
@@ -21,7 +20,7 @@ type cloudProviderDetector struct {
 	callback func() bool
 }
 
-// DetectCloudProvider detects the cloud provider if it is not set to "none" in datadog.yaml:
+// DetectCloudProvider detects the cloud provider where the agent is running in order:
 // * AWS ECS/Fargate
 // * AWS EC2
 // * GCE
@@ -35,19 +34,12 @@ func DetectCloudProvider() {
 		{name: azure.CloudProviderName, callback: azure.IsRunningOn},
 		{name: alibaba.CloudProviderName, callback: alibaba.IsRunningOn},
 	}
-	cloudProvider := config.Datadog.GetString("cloud_provider")
 
-	if cloudProvider == "none" {
-		log.Infof("cloud_provider is set to \"none\", skipping cloud provider detection")
-	} else {
-		for _, cloudDetector := range detectors {
-			if cloudProvider == "" || cloudProvider == cloudDetector.name {
-				if cloudDetector.callback() {
-					inventories.SetAgentMetadata(inventories.CloudProviderMetatadaName, cloudDetector.name)
-					log.Infof("Cloud provider %s detected", cloudDetector.name)
-					return
-				}
-			}
+	for _, cloudDetector := range detectors {
+		if cloudDetector.callback() {
+			inventories.SetAgentMetadata(inventories.CloudProviderMetatadaName, cloudDetector.name)
+			log.Infof("Cloud provider %s detected", cloudDetector.name)
+			return
 		}
 	}
 	log.Info("No cloud provider detected")
