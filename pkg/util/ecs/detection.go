@@ -11,6 +11,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/DataDog/datadog-agent/pkg/config"
 	"github.com/DataDog/datadog-agent/pkg/util/cache"
 	ecsmeta "github.com/DataDog/datadog-agent/pkg/util/ecs/metadata"
 	"github.com/DataDog/datadog-agent/pkg/util/log"
@@ -27,6 +28,10 @@ const (
 
 // IsECSInstance returns whether the agent is running in ECS.
 func IsECSInstance() bool {
+	isEnabled, _ := config.IsCloudProviderEnabled(config.Datadog, CloudProviderName)
+	if !isEnabled {
+		return false
+	}
 	_, err := ecsmeta.V1()
 	return err == nil
 }
@@ -34,6 +39,10 @@ func IsECSInstance() bool {
 // IsFargateInstance returns whether the agent is in an ECS fargate task.
 // It detects it by getting and unmarshalling the metadata API response.
 func IsFargateInstance() bool {
+	isEnabled, _ := config.IsCloudProviderEnabled(config.Datadog, CloudProviderName)
+	if !isEnabled {
+		return false
+	}
 	return queryCacheBool(isFargateInstanceCacheKey, func() (bool, time.Duration) {
 
 		// This envvar is set to AWS_ECS_EC2 on classic EC2 instances
@@ -83,6 +92,10 @@ func HasFargateResourceTags() bool {
 }
 
 func queryCacheBool(cacheKey string, cacheMissEvalFunc func() (bool, time.Duration)) bool {
+	isEnabled, _ := config.IsCloudProviderEnabled(config.Datadog, CloudProviderName)
+	if !isEnabled {
+		return false
+	}
 	if cachedValue, found := cache.Cache.Get(cacheKey); found {
 		if v, ok := cachedValue.(bool); ok {
 			return v
