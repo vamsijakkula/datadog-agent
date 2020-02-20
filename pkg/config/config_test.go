@@ -402,6 +402,28 @@ func TestAddAgentVersionToDomain(t *testing.T) {
 	assert.Equal(t, "https://app.myproxy.com", newURL)
 }
 
+func TestIsCloudProviderEnabled(t *testing.T) {
+	allMetadataEndpointsYAML := `cloud_provider: ""`
+	AWSMetadataEndpointYAML := `cloud_provider: "AWS"`
+	noneYAML := `cloud_provider: "none"`
+
+	testConfig := setupConfFromYAML(allMetadataEndpointsYAML)
+	isValid, _ := IsCloudProviderEnabled(testConfig, "AWS")
+	assert.True(t, isValid)
+
+	testConfig = setupConfFromYAML(AWSMetadataEndpointYAML)
+	isValid, _ = IsCloudProviderEnabled(testConfig, "AWS")
+	assert.True(t, isValid)
+
+	testConfig = setupConfFromYAML(AWSMetadataEndpointYAML)
+	isValid, _ = IsCloudProviderEnabled(testConfig, "GCP")
+	assert.False(t, isValid)
+
+	testConfig = setupConfFromYAML(noneYAML)
+	isValid, _ = IsCloudProviderEnabled(testConfig, "AWS")
+	assert.False(t, isValid)
+}
+
 func TestEnvNestedConfig(t *testing.T) {
 	config := setupConf()
 	config.BindEnv("foo.bar.nested")
