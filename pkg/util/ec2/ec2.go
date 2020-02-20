@@ -32,6 +32,10 @@ var (
 
 // GetInstanceID fetches the instance id for current host from the EC2 metadata API
 func GetInstanceID() (string, error) {
+	isEnabled, err := config.IsCloudProviderEnabled(config.Datadog, CloudProviderName)
+	if !isEnabled {
+		return "", err
+	}
 	return getMetadataItemWithMaxLength("/instance-id", config.Datadog.GetInt("metadata_endpoints_max_hostname_size"))
 }
 
@@ -55,6 +59,10 @@ func IsRunningOn() bool {
 
 // GetHostname fetches the hostname for current host from the EC2 metadata API
 func GetHostname() (string, error) {
+	isEnabled, err := config.IsCloudProviderEnabled(config.Datadog, CloudProviderName)
+	if !isEnabled {
+		return "", err
+	}
 	return getMetadataItemWithMaxLength("/hostname", config.Datadog.GetInt("metadata_endpoints_max_hostname_size"))
 }
 
@@ -62,6 +70,10 @@ func GetHostname() (string, error) {
 // EC2 instances, the the network ID is the VPC ID, if the instance is found to
 // be a part of exactly one VPC.
 func GetNetworkID() (string, error) {
+	isEnabled, err := config.IsCloudProviderEnabled(config.Datadog, CloudProviderName)
+	if !isEnabled {
+		return "", err
+	}
 	resp, err := getMetadataItem("/network/interfaces/macs")
 	if err != nil {
 		return "", err
@@ -120,6 +132,10 @@ func getMetadataItem(endpoint string) (string, error) {
 
 // GetClusterName returns the name of the cluster containing the current EC2 instance
 func GetClusterName() (string, error) {
+	isEnabled, err := config.IsCloudProviderEnabled(config.Datadog, CloudProviderName)
+	if !isEnabled {
+		return "", err
+	}
 	tags, err := GetTags()
 	if err != nil {
 		return "", fmt.Errorf("unable to retrieve clustername from EC2: %s", err)
