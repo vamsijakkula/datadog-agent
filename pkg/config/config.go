@@ -983,8 +983,8 @@ func getMultipleEndpointsWithConfig(config Config) (map[string][]string, error) 
 }
 
 // IsCloudProviderEnabled checks the cloud provider family provided in pkg/util/<cloud_provider>.go against the value for cloud_provider: on the global config object Datadog
-func IsCloudProviderEnabled(cloudProviderName string) (bool, error) {
-	cloudProviderFromConfig := Datadog.GetString("cloud_provider")
+func IsCloudProviderEnabled(config Config, cloudProviderName string) (bool, error) {
+	cloudProviderFromConfig := config.GetString("cloud_provider")
 	if cloudProviderFromConfig == "" || cloudProviderFromConfig == cloudProviderName {
 		return true, nil
 	}
