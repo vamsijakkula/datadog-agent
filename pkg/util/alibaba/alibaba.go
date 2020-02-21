@@ -33,8 +33,7 @@ func IsRunningOn() bool {
 
 // GetHostAlias returns the VM ID from the Alibaba Metadata api
 func GetHostAlias() (string, error) {
-	isEnabled, err := config.IsCloudProviderEnabled(config.Datadog, CloudProviderName)
-	if !isEnabled {
+	if isEnabled, err := config.IsCloudProviderEnabled(config.Datadog, CloudProviderName); !isEnabled {
 		return "", err
 	}
 	res, err := getResponseWithMaxLength(metadataURL+"/latest/meta-data/instance-id",

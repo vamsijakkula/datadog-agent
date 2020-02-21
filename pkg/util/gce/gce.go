@@ -35,8 +35,7 @@ func IsRunningOn() bool {
 
 // GetHostname returns the hostname querying GCE Metadata api
 func GetHostname() (string, error) {
-	isEnabled, err := config.IsCloudProviderEnabled(config.Datadog, CloudProviderName)
-	if !isEnabled {
+	if isEnabled, err := config.IsCloudProviderEnabled(config.Datadog, CloudProviderName); !isEnabled {
 		return "", err
 	}
 	hostname, err := getResponseWithMaxLength(metadataURL+"/instance/hostname",
@@ -49,8 +48,7 @@ func GetHostname() (string, error) {
 
 // GetHostAlias returns the host alias from GCE
 func GetHostAlias() (string, error) {
-	isEnabled, err := config.IsCloudProviderEnabled(config.Datadog, CloudProviderName)
-	if !isEnabled {
+	if isEnabled, err := config.IsCloudProviderEnabled(config.Datadog, CloudProviderName); !isEnabled {
 		return "", err
 	}
 	instanceName, err := getResponseWithMaxLength(metadataURL+"/instance/name",
@@ -69,8 +67,7 @@ func GetHostAlias() (string, error) {
 
 // GetClusterName returns the name of the cluster containing the current GCE instance
 func GetClusterName() (string, error) {
-	isEnabled, err := config.IsCloudProviderEnabled(config.Datadog, CloudProviderName)
-	if !isEnabled {
+	if isEnabled, err := config.IsCloudProviderEnabled(config.Datadog, CloudProviderName); !isEnabled {
 		return "", err
 	}
 	clusterName, err := getResponseWithMaxLength(metadataURL+"/instance/attributes/cluster-name",
@@ -85,8 +82,7 @@ func GetClusterName() (string, error) {
 // GCE instances, the the network ID is the VPC ID, if the instance is found to
 // be a part of exactly one VPC.
 func GetNetworkID() (string, error) {
-	isEnabled, err := config.IsCloudProviderEnabled(config.Datadog, CloudProviderName)
-	if !isEnabled {
+	if isEnabled, err := config.IsCloudProviderEnabled(config.Datadog, CloudProviderName); !isEnabled {
 		return "", err
 	}
 	resp, err := getResponse(metadataURL + "/instance/network-interfaces/")
