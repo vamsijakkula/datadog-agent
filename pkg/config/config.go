@@ -988,7 +988,7 @@ func IsCloudProviderEnabled(config Config, cloudProviderName string) (bool, erro
 	if cloudProviderFromConfig == "" || cloudProviderFromConfig == cloudProviderName {
 		return true, nil
 	}
-	err := fmt.Errorf("cloud_provider is set to %s in config, skipping %s Cloud Provider", cloudProviderFromConfig, cloudProviderName)
+	err := fmt.Errorf("cloud_provider is set to %s in agent configuration, skipping %s Cloud Provider", cloudProviderFromConfig, cloudProviderName)
 	return false, err
 }
 
