@@ -90,7 +90,7 @@ func HasFargateResourceTags() bool {
 }
 
 func queryCacheBool(cacheKey string, cacheMissEvalFunc func() (bool, time.Duration)) bool {
-	if isEnabled, err := config.IsCloudProviderEnabled(config.Datadog, CloudProviderName); !isEnabled {
+	if isEnabled, _ := config.IsCloudProviderEnabled(config.Datadog, CloudProviderName); !isEnabled {
 		return false
 	}
 	if cachedValue, found := cache.Cache.Get(cacheKey); found {
