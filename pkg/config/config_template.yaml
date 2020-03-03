@@ -22,16 +22,15 @@ api_key:
 # dd_url: https://app.datadoghq.com
 
 ## @param cloud_provider - string - optional - default: <empty>
-## The cloud provider endpoint the Agent should check for metadata.  Do not use "none" if the corresponding
-## scraper integration is enabled in your account (ex. this host is an EC2, and the AWS integrations provides metrics to 
-## your account about this host).  This may result in duplicated hosts.
+## This option restrict which endpoint will be used by the agent to retrieve host metadata. By default the agent will try
+## all cloud provider.
 ## Possible values are:
-## "AWS"     (AWS EC2, ECS/Fargate)
-## "GCP"     (Google Cloud Provider)
-## "Azure"   (Azure)
-## "Alibaba" (Alibaba)
-## "none"    (does not query any cloud metadata endpoint, using this setting on a cloud host may result in duplication)
-## ""        (default: queries all cloud metadata endpoints)
+## "AWS"     AWS EC2, ECS/Fargate
+## "GCP"     Google Cloud Provider
+## "Azure"   Azure
+## "Alibaba" Alibaba
+## "none"    does not query any cloud metadata endpoints (falling back on system metadata). Using this setting on a cloud provider host may result in duplicated hosts in your account.
+## ""        default: queries all cloud metadata endpoints
 #
 # cloud_provider: ""
 
