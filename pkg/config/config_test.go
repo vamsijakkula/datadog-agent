@@ -403,25 +403,25 @@ func TestAddAgentVersionToDomain(t *testing.T) {
 }
 
 func TestIsCloudProviderEnabled(t *testing.T) {
-	allMetadataEndpointsYAML := `cloud_provider: ""`
-	AWSMetadataEndpointYAML := `cloud_provider: "AWS"`
-	noneYAML := `cloud_provider: "none"`
+	holdValue := Datadog.Get("cloud_provider")
+	defer Datadog.Set("cloud_provider", holdValue)
 
-	testConfig := setupConfFromYAML(allMetadataEndpointsYAML)
-	isValid, _ := IsCloudProviderEnabled(testConfig, "AWS")
+	Datadog.Set("cloud_provider", "")
+	isValid := IsCloudProviderEnabled("AWS")
 	assert.True(t, isValid)
 
-	testConfig = setupConfFromYAML(AWSMetadataEndpointYAML)
-	isValid, _ = IsCloudProviderEnabled(testConfig, "AWS")
+	Datadog.Set("cloud_provider", "AWS")
+	isValid = IsCloudProviderEnabled("AWS")
 	assert.True(t, isValid)
 
-	testConfig = setupConfFromYAML(AWSMetadataEndpointYAML)
-	isValid, _ = IsCloudProviderEnabled(testConfig, "GCP")
+	isValid = IsCloudProviderEnabled("GCP")
 	assert.False(t, isValid)
 
-	testConfig = setupConfFromYAML(noneYAML)
-	isValid, _ = IsCloudProviderEnabled(testConfig, "AWS")
+	Datadog.Set("cloud_provider", "none")
+	isValid = IsCloudProviderEnabled("AWS")
 	assert.False(t, isValid)
+
+	Datadog.Set("cloud_provider", holdValue)
 }
 
 func TestEnvNestedConfig(t *testing.T) {

@@ -35,8 +35,8 @@ func IsRunningOn() bool {
 
 // GetHostname returns the hostname querying GCE Metadata api
 func GetHostname() (string, error) {
-	if isEnabled, err := config.IsCloudProviderEnabled(config.Datadog, CloudProviderName); !isEnabled {
-		return "", err
+	if isEnabled := config.IsCloudProviderEnabled(CloudProviderName); !isEnabled {
+		return "", nil
 	}
 	hostname, err := getResponseWithMaxLength(metadataURL+"/instance/hostname",
 		config.Datadog.GetInt("metadata_endpoints_max_hostname_size"))
@@ -48,8 +48,8 @@ func GetHostname() (string, error) {
 
 // GetHostAlias returns the host alias from GCE
 func GetHostAlias() (string, error) {
-	if isEnabled, err := config.IsCloudProviderEnabled(config.Datadog, CloudProviderName); !isEnabled {
-		return "", err
+	if isEnabled := config.IsCloudProviderEnabled(CloudProviderName); !isEnabled {
+		return "", nil
 	}
 	instanceName, err := getResponseWithMaxLength(metadataURL+"/instance/name",
 		config.Datadog.GetInt("metadata_endpoints_max_hostname_size"))
@@ -67,8 +67,8 @@ func GetHostAlias() (string, error) {
 
 // GetClusterName returns the name of the cluster containing the current GCE instance
 func GetClusterName() (string, error) {
-	if isEnabled, err := config.IsCloudProviderEnabled(config.Datadog, CloudProviderName); !isEnabled {
-		return "", err
+	if isEnabled := config.IsCloudProviderEnabled(CloudProviderName); !isEnabled {
+		return "", nil
 	}
 	clusterName, err := getResponseWithMaxLength(metadataURL+"/instance/attributes/cluster-name",
 		config.Datadog.GetInt("metadata_endpoints_max_hostname_size"))
@@ -82,8 +82,8 @@ func GetClusterName() (string, error) {
 // GCE instances, the the network ID is the VPC ID, if the instance is found to
 // be a part of exactly one VPC.
 func GetNetworkID() (string, error) {
-	if isEnabled, err := config.IsCloudProviderEnabled(config.Datadog, CloudProviderName); !isEnabled {
-		return "", err
+	if isEnabled := config.IsCloudProviderEnabled(CloudProviderName); !isEnabled {
+		return "", nil
 	}
 	resp, err := getResponse(metadataURL + "/instance/network-interfaces/")
 	if err != nil {

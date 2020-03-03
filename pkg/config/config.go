@@ -983,13 +983,14 @@ func getMultipleEndpointsWithConfig(config Config) (map[string][]string, error) 
 }
 
 // IsCloudProviderEnabled checks the cloud provider family provided in pkg/util/<cloud_provider>.go against the value for cloud_provider: on the global config object Datadog
-func IsCloudProviderEnabled(config Config, cloudProviderName string) (bool, error) {
-	cloudProviderFromConfig := config.GetString("cloud_provider")
+func IsCloudProviderEnabled(cloudProviderName string) bool {
+	cloudProviderFromConfig := Datadog.GetString("cloud_provider")
 	if cloudProviderFromConfig == "" || cloudProviderFromConfig == cloudProviderName {
-		return true, nil
+		log.Debugf("cloud_provider is set to %s in agent configuration, trying endpoints for %s Cloud Provider", cloudProviderFromConfig, cloudProviderName)
+		return true
 	}
-	err := fmt.Errorf("cloud_provider is set to %s in agent configuration, skipping %s Cloud Provider", cloudProviderFromConfig, cloudProviderName)
-	return false, err
+	log.Debugf("cloud_provider is set to %s in agent configuration, skipping %s Cloud Provider", cloudProviderFromConfig, cloudProviderName)
+	return false
 }
 
 // IsContainerized returns whether the Agent is running on a Docker container
