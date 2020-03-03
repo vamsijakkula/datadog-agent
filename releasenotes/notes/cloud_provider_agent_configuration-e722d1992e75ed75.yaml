@@ -9,10 +9,3 @@
 features:
   - |
     Introducing the cloud_provider option in agent configuration to stop querying cloud provider metadata endpoints that the host will not use.
-enhancements:
-  - |
-    The cloud_provider option allows users to configure their cloud provider in datadog.yaml
-    
-security:
-  - |
-    The cloud_provider option in agent config should stop false positive firewall alerts for unused cloud provider endpoints
