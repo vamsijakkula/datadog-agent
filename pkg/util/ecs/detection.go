@@ -70,6 +70,9 @@ func IsRunningOn() bool {
 // HasEC2ResourceTags returns whether the metadata endpoint in ECS exposes
 // resource tags.
 func HasEC2ResourceTags() bool {
+	if isEnabled := config.IsCloudProviderEnabled(CloudProviderName); !isEnabled {
+		return false
+	}
 	return queryCacheBool(hasEC2ResourceTagsCacheKey, func() (bool, time.Duration) {
 		client, err := ecsmeta.V3FromCurrentTask()
 		if err != nil {
