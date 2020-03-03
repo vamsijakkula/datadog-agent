@@ -28,7 +28,7 @@ const (
 
 // IsECSInstance returns whether the agent is running in ECS.
 func IsECSInstance() bool {
-	if isEnabled := config.IsCloudProviderEnabled(CloudProviderName); !isEnabled {
+	if !config.IsCloudProviderEnabled(CloudProviderName) {
 		return false
 	}
 	_, err := ecsmeta.V1()
@@ -38,7 +38,7 @@ func IsECSInstance() bool {
 // IsFargateInstance returns whether the agent is in an ECS fargate task.
 // It detects it by getting and unmarshalling the metadata API response.
 func IsFargateInstance() bool {
-	if isEnabled := config.IsCloudProviderEnabled(CloudProviderName); !isEnabled {
+	if !config.IsCloudProviderEnabled(CloudProviderName) {
 		return false
 	}
 	return queryCacheBool(isFargateInstanceCacheKey, func() (bool, time.Duration) {
@@ -70,7 +70,7 @@ func IsRunningOn() bool {
 // HasEC2ResourceTags returns whether the metadata endpoint in ECS exposes
 // resource tags.
 func HasEC2ResourceTags() bool {
-	if isEnabled := config.IsCloudProviderEnabled(CloudProviderName); !isEnabled {
+	if !config.IsCloudProviderEnabled(CloudProviderName) {
 		return false
 	}
 	return queryCacheBool(hasEC2ResourceTagsCacheKey, func() (bool, time.Duration) {
@@ -93,7 +93,7 @@ func HasFargateResourceTags() bool {
 }
 
 func queryCacheBool(cacheKey string, cacheMissEvalFunc func() (bool, time.Duration)) bool {
-	if isEnabled := config.IsCloudProviderEnabled(CloudProviderName); !isEnabled {
+	if !config.IsCloudProviderEnabled(CloudProviderName) {
 		return false
 	}
 	if cachedValue, found := cache.Cache.Get(cacheKey); found {

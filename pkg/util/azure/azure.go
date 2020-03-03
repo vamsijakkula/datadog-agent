@@ -35,7 +35,7 @@ func IsRunningOn() bool {
 
 // GetHostAlias returns the VM ID from the Azure Metadata api
 func GetHostAlias() (string, error) {
-	if isEnabled := config.IsCloudProviderEnabled(CloudProviderName); !isEnabled {
+	if !config.IsCloudProviderEnabled(CloudProviderName) {
 		return "", nil
 	}
 	res, err := getResponseWithMaxLength(metadataURL+"/metadata/instance/compute/vmId?api-version=2017-04-02&format=text",
@@ -48,7 +48,7 @@ func GetHostAlias() (string, error) {
 
 // GetClusterName returns the name of the cluster containing the current VM
 func GetClusterName() (string, error) {
-	if isEnabled := config.IsCloudProviderEnabled(CloudProviderName); !isEnabled {
+	if !config.IsCloudProviderEnabled(CloudProviderName) {
 		return "", nil
 	}
 	all, err := getResponse(metadataURL + "/metadata/instance/compute/resourceGroupName?api-version=2017-08-01&format=text")
