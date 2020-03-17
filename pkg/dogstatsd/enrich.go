@@ -35,6 +35,9 @@ func enrichTags(tags []string, defaultHostname string, originTagsFunc func() []s
 			n++
 		}
 	}
+	if entityIDValue == "none" && entityIDPrecedenceEnabled {
+		_ = log.Warnf("entityIDValue==none, tags: %v", tags)
+	}
 	tags = tags[:n]
 	if entityIDValue == "" || !entityIDPrecedenceEnabled {
 		// Add origin tags only if the entity id tags is not provided
