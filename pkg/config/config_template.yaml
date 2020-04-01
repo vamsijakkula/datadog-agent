@@ -180,8 +180,8 @@ api_key:
 # forwarder_stop_timeout: 2
 
 ## @param cloud_provider_metadata - string - optional - default: <empty>
-## This option restrict which endpoint will be used by the agent to retrieve host metadata. By default the agent will try
-## all cloud provider.
+## This option restricts which cloud provider endpoint will be used by the agent to retrieve metadata. By default the agent will try
+## all cloud providers.
 ## Possible values are:
 ## "AWS"     AWS EC2, ECS/Fargate
 ## "GCP"     Google Cloud Provider
