@@ -8,4 +8,4 @@
 ---
 features:
   - |
-    Introducing the cloud_provider option in agent configuration to stop querying cloud provider metadata endpoints that the host will not use.
+    Introducing the cloud_provider_metadata option in agent configuration to stop querying cloud provider metadata endpoints that the host will not use.

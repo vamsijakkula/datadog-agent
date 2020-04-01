@@ -21,19 +21,6 @@ api_key:
 #
 # dd_url: https://app.datadoghq.com
 
-## @param cloud_provider - string - optional - default: <empty>
-## This option restrict which endpoint will be used by the agent to retrieve host metadata. By default the agent will try
-## all cloud provider.
-## Possible values are:
-## "AWS"     AWS EC2, ECS/Fargate
-## "GCP"     Google Cloud Provider
-## "Azure"   Azure
-## "Alibaba" Alibaba
-## "none"    does not query any cloud metadata endpoints (falling back on system metadata). Using this setting on a cloud provider host may result in duplicated hosts in your account.
-## "all"        default: queries all cloud metadata endpoints
-#
-# cloud_provider: "all"
-
 ## @param proxy - custom object - optional
 ## If you need a proxy to connect to the Internet, provide it here (default:
 ## disabled). Refer to https://docs.datadoghq.com/agent/proxy/ to understand how to use these settings.
@@ -191,6 +178,19 @@ api_key:
 ## 'forwarder_stop_timeout' to 0.
 #
 # forwarder_stop_timeout: 2
+
+## @param cloud_provider_metadata - string - optional - default: <empty>
+## This option restrict which endpoint will be used by the agent to retrieve host metadata. By default the agent will try
+## all cloud provider.
+## Possible values are:
+## "AWS"     AWS EC2, ECS/Fargate
+## "GCP"     Google Cloud Provider
+## "Azure"   Azure
+## "Alibaba" Alibaba
+## "none"    does not query any cloud metadata endpoints (falling back on system metadata). Using this setting on a cloud provider host may result in duplicated hosts in your account.
+## "all"        default: queries all cloud metadata endpoints
+#
+# cloud_provider_metadata: "all"
 
 ## @param collect_ec2_tags - boolean - optional - default: false
 ## Collect AWS EC2 custom tags as host tags.

@@ -41,7 +41,7 @@ func TestDefaults(t *testing.T) {
 	assert.False(t, config.IsSet("dd_url"))
 	assert.Equal(t, "", config.GetString("site"))
 	assert.Equal(t, "", config.GetString("dd_url"))
-	assert.Equal(t, "", config.GetString("cloud_provider"))
+	assert.Equal(t, "", config.GetString("cloud_provider_metadata"))
 }
 
 func TestDefaultSite(t *testing.T) {
@@ -403,25 +403,25 @@ func TestAddAgentVersionToDomain(t *testing.T) {
 }
 
 func TestIsCloudProviderEnabled(t *testing.T) {
-	holdValue := Datadog.Get("cloud_provider")
-	defer Datadog.Set("cloud_provider", holdValue)
+	holdValue := Datadog.Get("cloud_provider_metadata")
+	defer Datadog.Set("cloud_provider_metadata", holdValue)
 
-	Datadog.Set("cloud_provider", "")
+	Datadog.Set("cloud_provider_metadata", "")
 	isValid := IsCloudProviderEnabled("AWS")
 	assert.True(t, isValid)
 
-	Datadog.Set("cloud_provider", "AWS")
+	Datadog.Set("cloud_provider_metadata", "AWS")
 	isValid = IsCloudProviderEnabled("AWS")
 	assert.True(t, isValid)
 
 	isValid = IsCloudProviderEnabled("GCP")
 	assert.False(t, isValid)
 
-	Datadog.Set("cloud_provider", "none")
+	Datadog.Set("cloud_provider_metadata", "none")
 	isValid = IsCloudProviderEnabled("AWS")
 	assert.False(t, isValid)
 
-	Datadog.Set("cloud_provider", holdValue)
+	Datadog.Set("cloud_provider_metadata", holdValue)
 }
 
 func TestEnvNestedConfig(t *testing.T) {

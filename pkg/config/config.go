@@ -128,7 +128,7 @@ func initConfig(config Config) {
 	config.BindEnv("site")
 	config.BindEnv("dd_url")
 	config.BindEnvAndSetDefault("app_key", "")
-	config.BindEnvAndSetDefault("cloud_provider", "all")
+	config.BindEnvAndSetDefault("cloud_provider_metadata", "all")
 	config.SetDefault("proxy", nil)
 	config.BindEnvAndSetDefault("skip_ssl_validation", false)
 	config.BindEnvAndSetDefault("hostname", "")
@@ -984,12 +984,12 @@ func getMultipleEndpointsWithConfig(config Config) (map[string][]string, error) 
 
 // IsCloudProviderEnabled checks the cloud provider family provided in pkg/util/<cloud_provider>.go against the value for cloud_provider: on the global config object Datadog
 func IsCloudProviderEnabled(cloudProviderName string) bool {
-	cloudProviderFromConfig := Datadog.GetString("cloud_provider")
+	cloudProviderFromConfig := Datadog.GetString("cloud_provider_metadata")
 	if cloudProviderFromConfig == "all" || cloudProviderFromConfig == cloudProviderName {
-		log.Debugf("cloud_provider is set to %s in agent configuration, trying endpoints for %s Cloud Provider", cloudProviderFromConfig, cloudProviderName)
+		log.Debugf("cloud_provider_metadata is set to %s in agent configuration, trying endpoints for %s Cloud Provider", cloudProviderFromConfig, cloudProviderName)
 		return true
 	}
-	log.Debugf("cloud_provider is set to %s in agent configuration, skipping %s Cloud Provider", cloudProviderFromConfig, cloudProviderName)
+	log.Debugf("cloud_provider_metadata is set to %s in agent configuration, skipping %s Cloud Provider", cloudProviderFromConfig, cloudProviderName)
 	return false
 }
 
