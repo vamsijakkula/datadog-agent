@@ -59,7 +59,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:a59f3622f110cd6dbb8675a21aa4882dd4163445985b6f0c1abf18a22bc7e837"
+  digest = "1:38506e19a3ae096dde167bfd9c2682767486639dcade7ae21b426b98170a741b"
   name = "github.com/DataDog/gohai"
   packages = [
     "cpu",
@@ -71,7 +71,7 @@
     "processes/gops",
   ]
   pruneopts = ""
-  revision = "8cbe900337f170d59939592f4f2f7bddf8d1c5b5"
+  revision = "f32fac1c10c3da6e39d7fb1d68e1be53397562b2"
 
 [[projects]]
   digest = "1:75f64877bf77b16c450dc23028abfa6d8b38e76ba70b6950cdd888e4f18e7032"
