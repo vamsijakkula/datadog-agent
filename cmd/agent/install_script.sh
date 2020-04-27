@@ -345,7 +345,7 @@ else
 fi
 
 # Creating or overriding the install information
-echo "---
+$sudo_cmd echo "---
 install_method:
   tool: install_script
   tool_version: install_script
