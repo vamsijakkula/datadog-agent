@@ -180,6 +180,12 @@ fail_on_non_triggered_tag:
     - echo CI_PIPELINE_SOURCE=$CI_PIPELINE_SOURCE CI_COMMIT_TAG=$CI_COMMIT_TAG
     - '[ "$CI_COMMIT_TAG" == "" -o "$CI_PIPELINE_SOURCE" != "push" ]'
 
+trigger_release:
+  stage: fail_on_tag
+  trigger:
+    project: DataDog/agent-release-management
+    branch: master
+
 #
 # deps_build
 #
