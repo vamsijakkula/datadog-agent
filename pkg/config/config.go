@@ -527,6 +527,7 @@ func initConfig(config Config) {
 	config.BindEnvAndSetDefault("histogram_copy_to_distribution_prefix", "")
 
 	config.BindEnv("api_key")
+	config.BindEnv("api_key_file")
 
 	config.BindEnvAndSetDefault("hpa_watcher_polling_freq", 10)
 	config.BindEnvAndSetDefault("hpa_watcher_gc_period", 60*5) // 5 minutes
@@ -826,6 +827,7 @@ func load(config Config, origin string, loadSecret bool) error {
 	}
 
 	loadProxyFromEnv(config)
+	readAPIKeyFromFile(config)
 	sanitizeAPIKey(config)
 	applyOverrides(config)
 	// setTracemallocEnabled *must* be called before setNumWorkers
@@ -867,6 +869,15 @@ func ResolveSecrets(config Config, origin string) error {
 		}
 	}
 	return nil
+}
+
+// Read the API from a file
+func readAPIKeyFromFile(config) {
+	if api_key_file := config.Datadog.GetString("api_key_file"); api_key_file != "" {
+		if api_key, err := iotutil.ReadFile(api_key_file); err != nil {
+			config.Datadog.Set("api_key", api_key)
+		}
+	}
 }
 
 // Avoid log ingestion breaking because of a newline in the API key
