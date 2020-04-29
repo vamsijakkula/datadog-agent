@@ -143,7 +143,7 @@ func StartAgent() error {
 	// Setup Profiling
 	// TODO: make this runtime configurable
 	if config.Datadog.GetBool("profiling.enabled") {
-		v, _ := version.Agent()
+		// v, _ := version.Agent()
 
 		var s string
 		if config.Datadog.IsSet("site") {
@@ -161,7 +161,7 @@ func StartAgent() error {
 			profiler.WithAPIKey(config.Datadog.GetString("api_key")),
 			profiler.WithService("agent"),
 			profiler.WithEnv(config.Datadog.GetString("env")),
-			profiler.WithTags(fmt.Sprintf("version:%v", v)),
+			// profiler.WithTags(fmt.Sprintf("version:%v", v)),
 		)
 		if err != nil {
 			log.Errorf("Error starting profiler: %v", err)
