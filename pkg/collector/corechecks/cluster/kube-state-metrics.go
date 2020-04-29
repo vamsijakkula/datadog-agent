@@ -6,21 +6,23 @@
 package cluster
 
 import (
-	core "github.com/DataDog/datadog-agent/pkg/collector/corechecks"
 	"context"
-	"gopkg.in/yaml.v2"
-	"github.com/DataDog/datadog-agent/pkg/collector/check"
-	"github.com/DataDog/datadog-agent/pkg/autodiscovery/integration"
-	"github.com/DataDog/datadog-agent/pkg/aggregator"
-	kubestatemetrics "github.com/DataDog/datadog-agent/pkg/kubestatemetrics/builder"
-	"k8s.io/client-go/tools/cache"
-	"github.com/DataDog/datadog-agent/pkg/util/kubernetes/apiserver"
-	"k8s.io/kube-state-metrics/pkg/options"
-	"github.com/DataDog/datadog-agent/pkg/util/log"
-	ksmstore "github.com/DataDog/datadog-agent/pkg/kubestatemetrics/store"
-	"k8s.io/kube-state-metrics/pkg/allowdenylist"
-	"time"
 	"fmt"
+	"time"
+
+	"github.com/DataDog/datadog-agent/pkg/aggregator"
+	"github.com/DataDog/datadog-agent/pkg/autodiscovery/integration"
+	"github.com/DataDog/datadog-agent/pkg/collector/check"
+	core "github.com/DataDog/datadog-agent/pkg/collector/corechecks"
+	kubestatemetrics "github.com/DataDog/datadog-agent/pkg/kubestatemetrics/builder"
+	ksmstore "github.com/DataDog/datadog-agent/pkg/kubestatemetrics/store"
+	"github.com/DataDog/datadog-agent/pkg/util/kubernetes/apiserver"
+	"github.com/DataDog/datadog-agent/pkg/util/log"
+
+	"gopkg.in/yaml.v2"
+	"k8s.io/client-go/tools/cache"
+	"k8s.io/kube-state-metrics/pkg/allowdenylist"
+	"k8s.io/kube-state-metrics/pkg/options"
 )
 
 const (
@@ -30,15 +32,15 @@ const (
 
 type KSMConfig struct {
 	// TODO fill in all the configurations.
-	Collectors                             []string  `yaml:"collectors"`
+	Collectors []string `yaml:"collectors"`
 }
 
 type KSMCheck struct {
-	ac       *apiserver.APIClient
+	ac *apiserver.APIClient
 	core.CheckBase
 	instance *KSMConfig
-	store []cache.Store
-	cancelF context.CancelFunc
+	store    []cache.Store
+	cancelF  context.CancelFunc
 }
 
 func (k *KSMCheck) Configure(config, initConfig integration.Data, source string) error {
@@ -69,7 +71,7 @@ func (k *KSMCheck) Configure(config, initConfig integration.Data, source string)
 		return err
 	}
 
-	if err :=  allowDenyList.Parse(); err != nil {
+	if err := allowDenyList.Parse(); err != nil {
 		return err
 	}
 	builder.WithAllowDenyList(allowDenyList)
@@ -104,7 +106,7 @@ func (k *KSMCheck) Run() error {
 	defer sender.Commit()
 
 	for _, store := range k.store {
-		metrics :=  store.(*ksmstore.MetricsStore).Push()
+		metrics := store.(*ksmstore.MetricsStore).Push()
 		processMetrics(sender, metrics)
 	}
 	return nil
@@ -116,7 +118,7 @@ func processMetrics(sender aggregator.Sender, metrics map[string][]ksmstore.DDMe
 		for _, metricFamily := range metricsList {
 			// m.Name -> label join.
 			for _, m := range metricFamily.ListMetrics {
-				sender.Gauge(metricFamily.Name, m.Val, "",joinLabels( m.Labels))
+				sender.Gauge(metricFamily.Name, m.Val, "", joinLabels(m.Labels))
 			}
 		}
 	}
@@ -136,7 +138,7 @@ func KubeStateMEtricsFactory() check.Check {
 func newKSMCheck(base core.CheckBase, instance *KSMConfig) *KSMCheck {
 	return &KSMCheck{
 		CheckBase: base,
-		instance: instance,
+		instance:  instance,
 	}
 }
 

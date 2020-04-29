@@ -6,15 +6,15 @@
 package store
 
 import (
-	"k8s.io/kube-state-metrics/pkg/metric"
-	"sync"
-	"k8s.io/apimachinery/pkg/types"
-
 	"fmt"
-	"k8s.io/apimachinery/pkg/api/meta"
-	"github.com/DataDog/datadog-agent/pkg/util/log"
-)
+	"sync"
 
+	"github.com/DataDog/datadog-agent/pkg/util/log"
+
+	"k8s.io/apimachinery/pkg/api/meta"
+	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/kube-state-metrics/pkg/metric"
+)
 
 // MetricsStore implements the k8s.io/client-go/tools/cache.Store
 // interface. Instead of storing entire Kubernetes objects, it stores metrics
@@ -37,7 +37,7 @@ type MetricsStore struct {
 // NewMetricsStore returns a new MetricsStore
 func NewMetricsStore(generateFunc func(interface{}) []metric.FamilyInterface, mt string) *MetricsStore {
 	return &MetricsStore{
-		MetricsType: mt,
+		MetricsType:         mt,
 		generateMetricsFunc: generateFunc,
 		metrics:             map[types.UID][]DDMetricsFam{},
 	}
@@ -45,12 +45,12 @@ func NewMetricsStore(generateFunc func(interface{}) []metric.FamilyInterface, mt
 
 type DDMetric struct {
 	Labels map[string]string
-	Val float64
+	Val    float64
 }
 
 type DDMetricsFam struct {
-	Type string  // Node
-	Name string // kube_node_status_allocatable
+	Type        string     // Node
+	Name        string     // kube_node_status_allocatable
 	ListMetrics []DDMetric // [ [nodeName: foo, tag: key], 3]
 }
 
@@ -184,17 +184,17 @@ func (s *MetricsStore) Push() map[string][]DDMetricsFam {
 		for _, metricFam := range metricFamList {
 			resMetric := []DDMetric{}
 			for _, metric := range metricFam.ListMetrics {
-					tags := metric.Labels
-					tags["uid"] = string(u)
-					resMetric = append(resMetric, DDMetric{
-						Val: metric.Val,
-						Labels: tags,
-					})
+				tags := metric.Labels
+				tags["uid"] = string(u)
+				resMetric = append(resMetric, DDMetric{
+					Val:    metric.Val,
+					Labels: tags,
+				})
 			}
 			mRes[metricFam.Name] = append(mRes[metricFam.Name], DDMetricsFam{
 				ListMetrics: resMetric,
-				Type: metricFam.Type,
-				Name: metricFam.Name,
+				Type:        metricFam.Type,
+				Name:        metricFam.Name,
 			})
 		}
 	}

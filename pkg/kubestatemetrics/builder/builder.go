@@ -6,36 +6,37 @@
 package builder
 
 import (
-	ksmbuild "k8s.io/kube-state-metrics/pkg/builder"
 	"context"
-	ksmtypes "k8s.io/kube-state-metrics/pkg/builder/types"
-	"k8s.io/kube-state-metrics/pkg/options"
-	"k8s.io/kube-state-metrics/pkg/watch"
+	"reflect"
+	"time"
+
+	"github.com/DataDog/datadog-agent/pkg/kubestatemetrics/store"
+
+	"github.com/prometheus/client_golang/prometheus"
 	vpaclientset "k8s.io/autoscaler/vertical-pod-autoscaler/pkg/client/clientset/versioned"
 	clientset "k8s.io/client-go/kubernetes"
-
-	"k8s.io/kube-state-metrics/pkg/metric_generator"
-	"github.com/DataDog/datadog-agent/pkg/kubestatemetrics/store"
-	"github.com/prometheus/client_golang/prometheus"
 	"k8s.io/client-go/tools/cache"
-	"time"
-	"reflect"
+	ksmbuild "k8s.io/kube-state-metrics/pkg/builder"
+	ksmtypes "k8s.io/kube-state-metrics/pkg/builder/types"
+	"k8s.io/kube-state-metrics/pkg/metric_generator"
+	"k8s.io/kube-state-metrics/pkg/options"
+	"k8s.io/kube-state-metrics/pkg/watch"
 )
 
 // Builder struct represented the metric store generator
 type Builder struct {
 	ksmBuilder ksmtypes.BuilderInterface
 
-	kubeClient     clientset.Interface
-	vpaClient      vpaclientset.Interface
-	namespaces     options.NamespaceList
-	ctx            context.Context
-	allowDenyList    ksmtypes.AllowDenyLister
-	metrics        *watch.ListWatchMetrics
-	shard          int32
-	totalShards    int
+	kubeClient    clientset.Interface
+	vpaClient     vpaclientset.Interface
+	namespaces    options.NamespaceList
+	ctx           context.Context
+	allowDenyList ksmtypes.AllowDenyLister
+	metrics       *watch.ListWatchMetrics
+	shard         int32
+	totalShards   int
 
-	resync         time.Duration
+	resync time.Duration
 }
 
 // New returns new Builder instance
@@ -106,7 +107,7 @@ func (b *Builder) WithGenerateStoreFunc(f ksmtypes.BuildStoreFunc) {
 
 //
 // Build initializes and registers all enabled stores.
-func (b *Builder) Build() []cache.Store{
+func (b *Builder) Build() []cache.Store {
 	return b.ksmBuilder.Build()
 }
 
@@ -118,7 +119,7 @@ func (b *Builder) WithResync(r time.Duration) {
 func (b *Builder) GenerateStore(metricFamilies []generator.FamilyGenerator,
 	expectedType interface{},
 	listWatchFunc func(kubeClient clientset.Interface, ns string) cache.ListerWatcher,
-)cache.Store {
+) cache.Store {
 	filteredMetricFamilies := generator.FilterMetricFamilies(b.allowDenyList, metricFamilies)
 	composedMetricGenFuncs := generator.ComposeMetricGenFuncs(filteredMetricFamilies)
 	store := store.NewMetricsStore(
@@ -138,7 +139,7 @@ func (b *Builder) reflectorPerNamespace(
 ) {
 	for _, ns := range b.namespaces {
 		lw := listWatchFunc(b.kubeClient, ns) //instrumentedListWatch := watch.NewInstrumentedListerWatcher(lw, g.metrics, reflect.TypeOf(expectedType).String())
-		reflector := cache.NewReflector(lw, expectedType, store, b.resync * time.Second)
+		reflector := cache.NewReflector(lw, expectedType, store, b.resync*time.Second)
 		go reflector.Run(b.ctx.Done())
 	}
 }
