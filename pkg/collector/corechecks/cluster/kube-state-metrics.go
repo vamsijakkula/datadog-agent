@@ -1,3 +1,8 @@
+// Unless explicitly stated otherwise all files in this repository are licensed
+// under the Apache License Version 2.0.
+// This product includes software developed at Datadog (https://www.datadoghq.com/).
+// Copyright 2016-2020 Datadog, Inc.
+
 package cluster
 
 import (
@@ -19,22 +24,13 @@ import (
 )
 
 const (
+	// TODO rename correctly once we deprecate the python check
 	kubeStateMetricsCheckName = "kube-state-metrics-alpha"
 )
 
 type KSMConfig struct {
 	// TODO fill in all the configurations.
 	Collectors                             []string  `yaml:"collectors"`
-	//Namespaces                           kubestatemetrics.NamespaceList `yaml:"collectors"`
-	//Shard                                int32
-	//TotalShards                          int
-	//Pod                                  string
-	//Namespace                            string
-	//MetricBlacklist                      kubestatemetrics.MetricSet
-	MetricWhitelist                        []string  `yaml:"metrics"`
-	//Version                              bool
-	//DisablePodNonGenericResourceMetrics  bool
-	//DisableNodeNonGenericResourceMetrics bool
 }
 
 type KSMCheck struct {
@@ -43,7 +39,6 @@ type KSMCheck struct {
 	instance *KSMConfig
 	store []cache.Store
 	cancelF context.CancelFunc
-	labelsToJoin map[string]map[string][]string
 }
 
 func (k *KSMCheck) Configure(config, initConfig integration.Data, source string) error {
@@ -59,24 +54,23 @@ func (k *KSMCheck) Configure(config, initConfig integration.Data, source string)
 
 	builder := kubestatemetrics.New()
 
+	// Prepare the collectors for the resources specified in the configuration file.
 	if err := builder.WithEnabledResources(k.instance.Collectors); err != nil {
 		log.Errorf("Failed to set up collectors: %v", err)
 		return nil
 	}
-	// All namespaces
+
+	// TODO namespaces should be configurable
 	builder.WithNamespaces(options.DefaultNamespaces)
 
-	// Metrics exclusion/inclusion
+	// TODO Metrics exclusion/inclusion needs to be configurable
 	allowDenyList, err := allowdenylist.New(options.MetricSet{}, options.MetricSet{})
 	if err != nil {
-		log.Errorf("Error %v", err)
-		return nil
+		return err
 	}
 
-	err = allowDenyList.Parse()
-	if err != nil {
-		log.Errorf("error initializing the allowDenyList list : %v", err)
-		return nil
+	if err :=  allowDenyList.Parse(); err != nil {
+		return err
 	}
 	builder.WithAllowDenyList(allowDenyList)
 
@@ -87,19 +81,17 @@ func (k *KSMCheck) Configure(config, initConfig integration.Data, source string)
 
 	builder.WithKubeClient(c.Cl)
 	builder.WithContext(context.Background())
-
-	builder.WithResync(30 * time.Second)  //k.instance.ResyncPeriod ? Even necessary ?
-
+	builder.WithResync(30 * time.Second) // TODO resync period should be configurable
 	builder.WithGenerateStoreFunc(builder.GenerateStore)
 
+	// Start the collection process
 	k.store = builder.Build()
 
 	return nil
 }
 
 func (c *KSMConfig) parse(data []byte) error {
-	// default values
-
+	// TODO specify the default values
 	return yaml.Unmarshal(data, c)
 }
 
@@ -149,6 +141,5 @@ func newKSMCheck(base core.CheckBase, instance *KSMConfig) *KSMCheck {
 }
 
 func init() {
-	// create the KSM builder
 	core.RegisterCheck(kubeStateMetricsCheckName, KubeStateMEtricsFactory)
 }
